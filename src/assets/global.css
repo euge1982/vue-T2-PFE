@@ -1,0 +1,20 @@
+/* Estilos globales de la aplicacion */
+
+/* Se importan las fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Saira", sans-serif;
+}
+
+/* Estilos para el body */
+body {
+  background: url('background.jpg') no-repeat center center/cover;   /* Imagen de fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
