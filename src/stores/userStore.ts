@@ -1,7 +1,7 @@
 //Archivo de configuracion del store
 
 import { defineStore } from 'pinia';   //Libreria para trabajar con el store
-import type { User } from '../models/UserModel.ts';   //Se importa el modelo User
+import type { User } from '../models/UserModel.js';   //Se importa el modelo User
 
 //Se crea  y se exporta el store
 export const useStore = defineStore('main', {

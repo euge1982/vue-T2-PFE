@@ -1,8 +1,8 @@
 export { fakeBackend };
 
 import type { User              } from '@/models/UserModel'
-import type { JwtPayload        } from '@/models/JwtModels';
-import type { AuthRequestBody   } from '@/models/AuthReqModel';
+import type { JwtPayload        } from '@/models/JwtModel';
+import type { AuthRequestBody   } from '@/models/AuthRequestModel';
 
 
 // Array de usuarios en localstorage
@@ -14,10 +14,10 @@ const user: User = {
     id: 1, 
     firstName: 'Matias', 
     lastName: 'Orellana', 
-    username: 'test', 
+    userName: 'test', 
     password: 'test',
     isAdmin: true, 
-    refreshTokens: [] 
+    refreshToken: [] 
 }
 
 
@@ -59,18 +59,18 @@ function fakeBackend() {
             // Funciones de rutas
 
             function authenticate() {
-                const { username, password } = body<AuthRequestBody>();
-                const user = users.find(x => x.username === username && x.password === password);
+                const { userName, password } = body<AuthRequestBody>();
+                const user = users.find(x => x.userName === userName && x.password === password);
 
                 if (!user) return error('Usuario o contraseña incorrectos');
 
                 // Agregar refresh token al usuario
-                user.refreshTokens.push(generateRefreshToken());
+                user.refreshToken.push(generateRefreshToken());
                 localStorage.setItem(usersKey, JSON.stringify(users));
 
                 return ok({
                     id: user.id,
-                    username: user.username,
+                    username: user.userName,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     isAdmin: user.isAdmin,
@@ -82,17 +82,17 @@ function fakeBackend() {
                 const refreshToken = getRefreshToken();
                 if (!refreshToken) return unauthorized();
 
-                const user = users.find(x => x.refreshTokens.includes(refreshToken));
+                const user = users.find(x => x.refreshToken.includes(refreshToken));
                 if (!user) return unauthorized();
 
                 // Reemplazar refresh token viejo por uno nuevo y guardar
-                user.refreshTokens = user.refreshTokens.filter(x => x !== refreshToken);
-                user.refreshTokens.push(generateRefreshToken());
+                user.refreshToken = user.refreshToken.filter(x => x !== refreshToken);
+                user.refreshToken.push(generateRefreshToken());
                 localStorage.setItem(usersKey, JSON.stringify(users));
 
                 return ok({
                     id: user.id,
-                    username: user.username,
+                    userName: user.userName,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     isAdmin: user.isAdmin,
@@ -104,11 +104,11 @@ function fakeBackend() {
                 if (!isLoggedIn()) return unauthorized();
 
                 const refreshToken = getRefreshToken();
-                const _user = users.find(x => x.refreshTokens.includes(refreshToken));
+                const _user = users.find(x => x.refreshToken.includes(refreshToken));
 
                 // Revocar token y guardar en almacenamiento local
                 if(_user !==  undefined) {
-                    _user.refreshTokens = _user.refreshTokens.filter(x => x !== refreshToken);
+                    _user.refreshToken = _user.refreshToken.filter(x => x !== refreshToken);
                     localStorage.setItem(usersKey, JSON.stringify(users));
                 }
 

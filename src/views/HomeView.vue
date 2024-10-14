@@ -1,30 +1,32 @@
 <!-- Vista para mostrar los datos del usuario -->
 <script setup lang="ts">
-  import { useStore } from '@/stores/store';   //Se importa el store
+  import type { User } from '@/models/UserModel';   //Se importa el modelo User
+  import { useStore } from '@/stores/userStore';   //Se importa el store
   import { useRouter } from 'vue-router';   //Se importa el router
+  import { useAuthStore } from '@/stores/authStore';
+  import { reactive } from 'vue';
 
   //Se define y usa el store. que trae los datos del usuario
   const store = useStore();
   
   //Se obtiene el usuario desde el store
-  const user = store.user;
+  const user : User = reactive<User>(store.user);
 
   //Se define y usa el router
   const router = useRouter();
 
+  const authStore = useAuthStore();
+
   //Funcion para cerrar la sesion
-  const logout = () => {
-    store.setUser({ id: 1, firstName: '', lastName: '', isAdmin: false, refreshToken: [], userName: '', password: '', remember: false });
-    router.push('/');
+  function logout() {
+    authStore.logout();
   }
 </script>
 
 <template>
   <!-- Datos del usuario -->
   <div>
-    <h1>Datos del User</h1>;
-    <p>Usuario: {{ user.userName }}</p>;
-    <p>Recordarme: {{ user.remember ? 'Sí' : 'No' }}</p>
+    <h1>Hola: {{ user.userName }}</h1>
 
     <!-- Botón para cerrar sesión -->
     <button @click="logout()">

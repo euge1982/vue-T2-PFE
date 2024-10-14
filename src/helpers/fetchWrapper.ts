@@ -33,8 +33,9 @@ function request (method: string) {
 //Funciones Auxiliares
 function authHeader(url: string): Record<string, string> {
     const { auth } = useAuthStore();
-    const isLoggedIn = !!auth.data?.jwtToken;
+    const isLoggedIn = !!auth.data?.jwtToken; 
     const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL);
+    
     if (isLoggedIn && isApiUrl) {
         return { Authorization: `Bearer ${auth.data?.jwtToken}` };
     } else {

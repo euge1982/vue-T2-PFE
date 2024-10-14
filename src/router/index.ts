@@ -6,8 +6,15 @@ import HomeView from '@/views/HomeView.vue';   //Se importa el componente HomeVi
 
 //Se crean las rutas
 const routes = [
-  { path: '/', component: LoginPage },   
-  { path: '/home', component: HomeView },
+  { 
+    path: '/', 
+    name: 'home',
+    component: HomeView 
+  },
+  { 
+    path: '/login',
+    name: 'login', 
+    component: LoginPage }
 ];
 
 //Se crea el router

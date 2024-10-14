@@ -4,12 +4,6 @@
   //Se importa el componente LoginForm
   import LoginForm from '../components/LoginForm.vue';
 
-  //Se define el objeto User
-  /*const User = {
-    user: '',
-    password: '',
-    remember: false,
-  };*/
 </script>
 
 <template>
