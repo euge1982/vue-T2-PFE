@@ -1,3 +1,5 @@
+//Archivo para manejar las peticiones
+
 import { useAuthStore } from '@/stores/authStore';
 
 export const fetchWrapper = {

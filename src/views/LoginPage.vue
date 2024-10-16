@@ -8,8 +8,6 @@
 
 <template>
     <div>
-      <!-- Se envia el componente LoginForm con el objeto User 
-      <LoginForm :user="User"/>  -->
       <LoginForm /> 
     </div>
   </template>  

@@ -2,11 +2,8 @@
 
 <!-- Script -->
 <script setup lang="ts">
-//import type { User } from '@/models/UserModel.ts';   //Se importa el modelo User
-//import { reactive } from 'vue';   //Libreria para trabajar con objetos reactivos
 
 //Importaciones locales
-import { useStore } from '@/stores/userStore';   //Se importa el store
 import { useRouter } from 'vue-router';   //Se importa el router
 import { useAuthStore } from '@/stores/authStore';
 
@@ -14,22 +11,24 @@ import { useAuthStore } from '@/stores/authStore';
 import {Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
 
-const uStore = useStore();   //Se define y usa el store
 const router = useRouter();   //Se define y usa el router
 const authStore = useAuthStore();   //Se define y usa el store de autenticacion
 
+//Validacion con Yup
 const schema = Yup.object().shape({
     userName: Yup.string().required('Usuario Requerido'),
     password: Yup.string().required('Contraseña Requerida')
 });
 
+//Si hay un usuario autenticado redirige a la home
 if (authStore.auth.data) {
   router.push('/');
-}
+};
 
 //Funcion para manejar el envio del formulario
 function handleSubmit(values: any, {setErrors}: any) {
   const { userName, password } = values;
+  //Si no hay errores realiza el login y redirige al home
   return authStore.login(userName, password).then(() => {
     router.push('/');
   })
@@ -41,21 +40,20 @@ function handleSubmit(values: any, {setErrors}: any) {
 <!-- Template -->
 <template>
     <div class="wrapper">
-        <!-- Se agrega el evento submit para manejar el envio del formulario  y prevent para que no recargue la pagina -->
+        <!-- Se agrega el evento submit para manejar el envio del formulario -->
         <Form @submit="handleSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">   
             <!-- Titulo del formulario -->
             <h1>Login</h1>
 
-            <!-- Input para el usuario -->
+            <!-- Field para el usuario -->
             <div class="input-bx">
-                <!-- v-model se utiliza para manejar la informacion del input -->
                 <Field name ="userName" type="text" :class="{'is-invalid': errors.userName || errors.apiError}" placeholder="Usuario" required />
                 <!-- icono de usuario -->
                 <ion-icon class="icon" name="person-circle"></ion-icon>
                 <div class="invalid-feedback">{{ errors.userName }}</div>
             </div>
 
-            <!-- Input para la contraseña -->
+            <!-- Field para la contraseña -->
             <div class="input-bx">
                 <Field name ="password" type="password" :class="{'is-invalid': errors.password || errors.apiError}" placeholder="Contraseña" required />
                 <!-- icono del candado -->
@@ -74,10 +72,10 @@ function handleSubmit(values: any, {setErrors}: any) {
 
             <!-- Boton para ingresar -->
             <button type="submit" class="btn">
-                <span v-show="isSubmitting" class="loader"></span>
+                <span v-show="isSubmitting" class="loader"></span> 
                 <p v-show="!isSubmitting">Ingresar</p>
             </button>
-            
+            <!-- Mensaje de error -->
             <div v-if="errors.apiError" class="error-alert">{{ errors.apiError }}</div>
         </Form>
     </div>

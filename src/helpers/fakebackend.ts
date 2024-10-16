@@ -9,7 +9,7 @@ import type { AuthRequestBody   } from '@/models/AuthRequestModel';
 const usersKey = 'vue-3-jwt-refresh-token-users';
 const users: User[] = JSON.parse(localStorage.getItem(usersKey) || '[]');
 
-// Agregar un usuario test en localstorage si no hay ninguno
+// Agregar los usuario test en localstorage si no hay ninguno
 const user: User = { 
     id: 1, 
     firstName: 'Matias', 
@@ -18,13 +18,24 @@ const user: User = {
     password: 'test',
     isAdmin: true, 
     refreshToken: [] 
-}
+};
+
+const user2: User = { 
+    id: 2, 
+    firstName: 'Alma', 
+    lastName: 'Quiroz', 
+    userName: 'test2', 
+    password: 'test2',
+    isAdmin: false, 
+    refreshToken: [] 
+};
 
 
 // si no hay usuarios creamos uno y lo guardamos en almacenamiento local
 if (!users.length) {
     users.push(user);
-    localStorage.setItem(usersKey, JSON.stringify(users));
+    users.push(user2);
+    localStorage.setItem(usersKey, JSON.stringify(users));   // lo guardamos en localstorage
 }
 
 function fakeBackend() {
@@ -67,7 +78,7 @@ function fakeBackend() {
                 // Agregar refresh token al usuario
                 user.refreshToken.push(generateRefreshToken());
                 localStorage.setItem(usersKey, JSON.stringify(users));
-
+      
                 return ok({
                     id: user.id,
                     username: user.userName,

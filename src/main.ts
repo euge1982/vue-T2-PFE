@@ -13,6 +13,7 @@ import router from '@/router/index'   //Se importa el router
 fakeBackend();
 startApp();
 
+//Funcion para iniciar la app
 async function startApp() {
     const app = createApp(App)   //Se crea la app
     
@@ -20,13 +21,13 @@ async function startApp() {
     app.use(createPinia())   //Se usa la libreria de pinia
 
     try {
-        const authStore = useAuthStore()   //Se usa el store de autenticacion
-        await authStore.refreshToken()   //Se usa el fake backend
+        const authStore = useAuthStore();   //Se usa el store de autenticacion
+        await authStore.refreshToken(); 
     } 
     catch (error) {
         console.warn('No hay datos de autenticacion para el usuario');
         console.info('Redirigiendo a login page');
-        router.push('/login')
+        router.push('/login')   //Se redirige a la pagina de login si no hay un usuario autenticado
     }
 
     app.mount('#app')   //Se renderiza la app
